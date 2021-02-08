@@ -1,46 +1,19 @@
 import { useState, useEffect } from "react"
 import Head from 'next/head'
 import Link from 'next/link'
-import distanceInWordsToNow from 'date-fns/formatDistanceToNow'
+import Card from '../components/card'
+import Navbar from '../components/navbar'
 
-import { headerLists, footerLists } from './state'
+import { footerLists } from './state'
 
 import styles from '../styles/Home.module.css'
-
-const Card = (props) => {
-  const by = props?.by ?? ''
-  const descendants = props?.descendants ?? ''
-  const itemId = props?.itemId ?? ''
-  const kids = props?.kids ?? ''
-  const score = props?.score ?? ''
-  const time = props?.time ?? ''
-  const title = props?.title ?? ''
-  const type = props?.type ?? ''
-  const url = props?.url ?? ''
-
-  const pattern = /^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i
-  const hostname = url.match(pattern)
-  return (
-    <Link href={url} key={itemId}>
-      <div className={styles.card}>
-        <div>
-          <tag href={url}>{title} </tag>
-          <a href={`https://news.ycombinator.com/from?site=${hostname && hostname[1]}`}>({hostname && hostname[1]}) </a>
-        </div>
-        <div>
-          <p>Score {score} by <a href={`https://news.ycombinator.com/user?id=${by}`}>{by}</a> <a href={`https://news.ycombinator.com/item?id=${itemId}`}>{distanceInWordsToNow(new Date(time * 1000))} ago </a> | <a href={`https://news.ycombinator.com/hide?id=${itemId}&goto=news`}>hide</a> | <a>{kids.length > 0 ? `${kids.length} comments` : 'discuss'} </a></p>
-        </div>
-      </div>
-    </Link>
-  )
-}
 
 export default function Home({ startPosition, topStories, ...props }) {
   const [posts, setPosts] = useState([])
 
   useEffect(async () => {
     const promises = topStories
-      .slice(startPosition * 30, startPosition + 1 * 30)
+      .slice(startPosition * 30, (startPosition + 1) * 30)
       .map(id =>
         fetch(`http://localhost:3000/api/hackernews/item?id=${id}`).then(
           response => response.json()
@@ -64,33 +37,12 @@ export default function Home({ startPosition, topStories, ...props }) {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <header className={styles.header}>
-        <Link href="/" passHref>
-          <a href="/">
-            <img className={styles.border} src="https://news.ycombinator.com/y18.gif" />
-          </a>
-        </Link>
-        <Link href="/news" passHref>
-          <b style={{ margin: "0 4px" }}>
-            <a>Hacker News</a>
-          </b>
-        </Link>
-        {headerLists.map((eachHL, indexHL) => {
-          return (
-            <>
-            <Link href={eachHL.href} passHref>
-              <a>{eachHL.label}</a>
-            </Link>
-            {headerLists.length - 1 > indexHL && " | "}
-            </>
-          )
-        })}
-      </header>
+      <Navbar title="Hacker News"></Navbar>
       <main>
-        {posts.length > 0 && posts.map((eachPost, ei) => {
+        {posts.length > 0 && posts.map((eachPost, indexPost) => {
           return (
-            <div className={styles.cardWrapper}>
-              <p className={styles.countNumber}>{startPosition * 30 + ei + 1}</p>
+            <div key={indexPost} className={styles.cardWrapper}>
+              <p className={styles.countNumber}>{startPosition * 30 + indexPost + 1}</p>
               <Card {...eachPost} />
             </div>
           )
@@ -101,12 +53,9 @@ export default function Home({ startPosition, topStories, ...props }) {
         <div className={styles.miniSection}>
           {footerLists.map((eachFL, indexFL) => {
             return (
-              <>
-              <Link href={eachFL.href} passHref>
-                <a>{eachFL.label}</a>
+              <Link key={indexFL} href={eachFL.href} passHref>
+                  <a>{eachFL.label}{footerLists.length - 1 > indexFL && " | "}</a>
               </Link>
-              {footerLists.length - 1 > indexFL && " | "}
-              </>
             )
           })}
         </div>

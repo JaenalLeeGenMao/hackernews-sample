@@ -6,18 +6,6 @@
   background-color: rgb(246, 246, 239);
 }
 
-.header {
-  background-color: rgb(255, 102, 0);
-  padding: 2px;
-}
-
-.header a {
-  color: #000000;
-  vertical-align: middle;
-  text-decoration: none;
-  cursor: pointer;
-}
-
 .footer a {
   color: #000000;
   vertical-align: middle;
@@ -58,21 +46,6 @@
 .cardWrapper .countNumber {
   display: block;
   margin: 4px;
-}
-
-.card {
-  display: block;
-  margin: 4px;
-}
-
-.card p,
-.card a {
-  font-size: 8pt;
-  color: #828282;
-}
-
-.card a:hover {
-  text-decoration: underline;
 }
 
 @media (max-width: 600px) {
