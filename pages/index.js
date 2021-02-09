@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react"
 import Head from 'next/head'
-import Link from 'next/link'
 import Card from '../components/card'
 import Navbar from '../components/navbar'
+import Footer from '../components/footer'
 
-import { footerLists } from './state'
+import { getCookie } from '../pages/lib/cookieUtil'
 
 import styles from '../styles/Home.module.css'
 
 export default function Home({ startPosition, topStories, ...props }) {
   const [posts, setPosts] = useState([])
+  const [isLogin, setIsLogin] = useState(false)
 
   useEffect(async () => {
     const promises = topStories
@@ -23,13 +24,10 @@ export default function Home({ startPosition, topStories, ...props }) {
     setPosts(result);
   })
 
-  const _handleSearchSubmit = (e) => {
-    const inputEl = document.getElementById("searchInput")
-
-    if (e.key === 'Enter' || e.keyCode === 13) {
-      window.location.href = `https://hn.algolia.com/?q=${inputEl.value}`
-    }
-  }
+  useEffect(() => {
+    const accessToken = getCookie('_at') || ''
+    setIsLogin(accessToken ? true : false)
+  })
 
   return (
     <div className={styles.container}>
@@ -37,7 +35,7 @@ export default function Home({ startPosition, topStories, ...props }) {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navbar title="Hacker News"></Navbar>
+      <Navbar title="Hacker News" isLogin={isLogin}></Navbar>
       <main>
         {posts.length > 0 && posts.map((eachPost, indexPost) => {
           return (
@@ -48,21 +46,7 @@ export default function Home({ startPosition, topStories, ...props }) {
           )
         })}
       </main>
-      <footer className={styles.footer}>
-        <hr className={styles.lineBreak} />
-        <div className={styles.miniSection}>
-          {footerLists.map((eachFL, indexFL) => {
-            return (
-              <Link key={indexFL} href={eachFL.href} passHref>
-                  <a>{eachFL.label}{footerLists.length - 1 > indexFL && " | "}</a>
-              </Link>
-            )
-          })}
-        </div>
-        <div className={styles.miniSection}>
-          Search: <input id="searchInput" onKeyUp={_handleSearchSubmit}></input>
-        </div>
-      </footer>
+      <Footer></Footer>
     </div>
   )
 }

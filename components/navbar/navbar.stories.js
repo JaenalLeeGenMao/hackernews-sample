@@ -27,3 +27,8 @@ export const Title = Template.bind({});
 Title.args = {
   title: 'Search'
 };
+
+export const isLogin = Template.bind({});
+isLogin.args = {
+  isLogin: true
+};

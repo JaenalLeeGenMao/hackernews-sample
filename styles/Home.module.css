@@ -6,38 +6,6 @@
   background-color: rgb(246, 246, 239);
 }
 
-.footer a {
-  color: #000000;
-  vertical-align: middle;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.footer a:visited {
-  color:#828282;
-  text-decoration:none;
-}
-
-.footer .miniSection {
-  text-align: center;
-  font-size: 8pt;
-  margin: 1em 0;
-}
-
-.active {
-  color: #ffffff;
-}
-
-.border {
-  border: 1px white solid;
-}
-
-.lineBreak {
-  height: 2px;
-  border: none;
-  background-color: rgb(255, 102, 0);
-}
-
 .cardWrapper {
   display: flex;
   font-size: 10pt;

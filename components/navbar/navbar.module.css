@@ -16,3 +16,14 @@
 .border {
     border: 1px white solid;
 }
+
+.loginSection {
+  width: 20%;
+  text-align: right;
+  float: right;
+  margin: 4px;
+}
+
+.loginSection:hover {
+  cursor: pointer;
+}
